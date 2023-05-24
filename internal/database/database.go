@@ -3,24 +3,21 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
 
-const (
-	HOST     = "127.0.0.1"
-	PORT     = 5432
-	USER     = "postgres"
-	PASSWORD = "postgres"
-	NAME     = "postgres"
-)
-
 // ConnectDB производит подключение к базе данных
 func ConnectDB() *sql.DB {
+	godotenv.Load()
 	db, err := sql.Open("postgres", fmt.Sprintf(
-		"host= %s port = %d user = %s password = %s dbname = %s sslmode=disable",
-		HOST, PORT, USER, PASSWORD, NAME))
+		"host= %s port = %s user = %s password = %s dbname = %s sslmode=disable",
+		os.Getenv("DB_HOST"), os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME")))
 	if err != nil {
 		logrus.Fatal("can not access to db", err)
 	}

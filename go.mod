@@ -14,6 +14,8 @@ require (
 )
 
 require (
+	github.com/joho/godotenv v1.5.1
+	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.3
 	golang.org/x/sys v0.8.0 // indirect
 )
