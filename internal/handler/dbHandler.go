@@ -37,6 +37,12 @@ func postToDB(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
+	// Проверка на пустой URL
+	if len(longUrl.Url) == 0 {
+		utilities.SendResponse(w, result)
+		return
+	}
+
 	// Проверка наличия URL в базе данных
 	err = database.CheckUrlInDB(&exist, longUrl.Url, db)
 	if err != nil {
