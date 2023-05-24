@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  db:
+    container_name: ozon_app_db
+    restart: always
+    image: postgres:14.4-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - "54321:5432"
+    
+  app_db:
+    container_name: ozon_app_postgre
+    build: ./
+    links:
+      - db
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_URL : postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable
+
+
+volumes:
+  db-data:

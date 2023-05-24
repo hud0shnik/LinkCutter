@@ -14,6 +14,7 @@ func main() {
 	// Настройка логгера
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
+	// Запись флага типа хранилища
 	var dbFlag bool
 	flag.BoolVar(&dbFlag, "db", false, "Run with DB postgres")
 	flag.Parse()
