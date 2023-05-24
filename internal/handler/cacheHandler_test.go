@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"LinkCutter/internal/models"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Тесты для роутера c PostgreSQL
-func Test_DBHandler(t *testing.T) {
+// Тесты для роутера c In-Memory решением
+func Test_CacheHandler(t *testing.T) {
 	testCases := []struct {
 		description    string
 		httpMethod     string
@@ -57,7 +58,11 @@ func Test_DBHandler(t *testing.T) {
 	}
 
 	// Проверка кейсов
-	handler := http.HandlerFunc(DBHandler)
+	shortMap := make(map[string]models.Url)
+	longMap := make(map[string]models.Url)
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		CacheHandler(w, r, shortMap, longMap)
+	})
 	for _, tc := range testCases {
 		t.Run(tc.description, func(t *testing.T) {
 			rec := httptest.NewRecorder()
